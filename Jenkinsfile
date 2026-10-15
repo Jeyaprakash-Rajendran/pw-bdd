@@ -1,6 +1,15 @@
 pipeline {
   agent any
 
+  triggers {
+    pollSCM('H/2 * * * *')             // check GitHub every ~2 minutes
+  }
+
+  parameters {
+    choice(name: 'BROWSER', choices: ['chromium', 'firefox', 'all'], description: 'Which browser')
+    string(name: 'TAGS', defaultValue: '', description: 'e.g. @smoke (leave empty for all)')
+  }
+
   stages {
     stage('Install') {
       steps {
@@ -8,14 +17,20 @@ pipeline {
         bat 'npx playwright install'
       }
     }
+
     stage('Generate BDD specs') {
       steps {
         bat 'npx bddgen'
       }
     }
+
     stage('Run tests') {
       steps {
-        bat 'npx playwright test'
+        script {
+          def grep    = params.TAGS ? "--grep \"${params.TAGS}\"" : ''
+          def project = params.BROWSER == 'all' ? '' : "--project=${params.BROWSER}"
+          bat "npx playwright test ${project} ${grep}"
+        }
       }
     }
   }
@@ -24,5 +39,7 @@ pipeline {
     always {
       archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
     }
+    success { echo 'All tests passed' }
+    failure { echo 'Some tests failed - check the report under Artifacts' }
   }
 }
