@@ -16,3 +16,14 @@ Then('I should see the {string} page', async ({ productsPage }, title) => {
 Then('I should see an error containing {string}', async ({ loginPage }, text) => {
   await expect(loginPage.errorMessage).toContainText(text);
 });
+Given('step one', async () => {
+  console.log('Given: step one');
+});
+
+When('step two', async () => {
+  console.log('When: step two');
+});
+
+Then('step three', async () => {
+  console.log('Then: step three');
+});
