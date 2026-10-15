@@ -1,0 +1,15 @@
+{
+  "name": "pw-bdd",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "npx bddgen && npx playwright test",
+    "test:headed": "npx bddgen && npx playwright test --headed",
+    "test:smoke": "npx bddgen --tags @smoke && npx playwright test",
+    "report": "npx playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "playwright-bdd": "^9.2.1"
+  }
+}
