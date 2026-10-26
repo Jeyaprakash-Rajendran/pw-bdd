@@ -1,11 +1,6 @@
-Feature: Login
+Feature: Simple demo
 
-  Background:
-
-
-  Scenario: Verf login
-      Given I am on the login page
-    When I log in as "standard_user" with password "secret_sauce"
-    Then I should see the "Products" page
-
-  
+  Scenario: Say hello
+    Given step one
+    When step two
+    Then step three
